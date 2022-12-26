@@ -4,8 +4,22 @@ import { useState } from "react";
 import { BsPower, BsArrowClockwise, BsTerminal } from "react-icons/bs"
 
 
+import { Storage } from '@ionic/storage';
+
 function Container(){
     let [Command,setCommand] = useState();
+
+
+    function loadConfig(){
+        const store = new Storage();
+        store.create();
+        store.get('username').then(res=>{
+            console.log(res);
+        })
+    }
+
+
+
 
     function shutdown(){
         //TODO ask confirm
@@ -13,6 +27,7 @@ function Container(){
 
     function restart(){
         //TODO: ask confirm
+        
     }
 
     function sendCommand(){
@@ -45,7 +60,7 @@ function Container(){
                     </IonButton>
 
 
-
+<button onClick={()=>loadConfig()}>aaa</button>
         </IonContent>
     );
 }

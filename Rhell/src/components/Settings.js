@@ -7,12 +7,14 @@ import {
         IonContent,
         IonToolbar,
         IonTitle,
-        IonPage,
         IonItem,
         IonLabel,
         IonInput,
     IonIcon
 } from '@ionic/react';
+import { Storage } from '@ionic/storage';
+
+import md5 from 'js-md5';
 
 
 function Settings(){
@@ -22,32 +24,29 @@ function Settings(){
     let [FontSize, setFontSize] = useState(16);
 
     function storeSettings(){
+        console.log(Password);
+
         console.log("OK");
+        const store = new Storage();
+        store.create();
+        store.set('Username', Username);
+        store.set('Password', Password);
+        store.set('FontSize', FontSize);
+        store.set('IPServer', IPServer);
     }
     function changeFontSize(value){
-        if(value==1){
-            setFontSize(12)
-        }else if(value==2){
-            setFontSize(14)
-        }else if(value==3){
-            setFontSize(16)
-        }else if(value==4){
-            setFontSize(18)
-        }else{
-            setFontSize(20)
-        }
-        //TODO: recheck
+        setFontSize(10+(2*value)); //12,14,16,18,20
     }
 
 
     const modal = useRef(null);
     return(
-        <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => console.log(ev)} mode="ios">
+        <IonModal ref={modal} trigger="open-modal" mode="ios">
             <IonHeader>
                 <IonToolbar>
                     <IonButton color="danger" slot="start" onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
 
-                    <IonTitle>Setting</IonTitle>
+                    <IonTitle style={{fontSize: FontSize}}>Setting</IonTitle>
 
                         <IonButton color="success" slot="end" strong={true} onClick={() => {modal.current?.dismiss(); storeSettings()}}>
                             Confirm
@@ -69,12 +68,12 @@ function Settings(){
                     </IonItem>
                     <IonItem>
                         <IonLabel style={{fontSize: FontSize}} position="stacked">Password</IonLabel>
-                        <IonInput style={{fontSize: FontSize}} type='password' clearInput={true} placeholder="Password" onIonChange={(ev)=>setPassword(ev.target.value)}></IonInput>
+                    <IonInput style={{ fontSize: FontSize }} type='password' clearInput={true} placeholder="Password" onIonChange={(ev) => setPassword(md5(ev.target.value))}></IonInput>
                     </IonItem>
                     <br></br>
                     <br></br>
                     <IonItem>
-                        <IonLabel position="stacked">Font size</IonLabel>
+                    <IonLabel style={{ fontSize: FontSize }}  position="stacked">Font size</IonLabel>
                         <IonInput type='range' default={3} min={1} max={5} onIonChange={(ev) => changeFontSize(ev.target.value)}></IonInput>
                     </IonItem>
 
