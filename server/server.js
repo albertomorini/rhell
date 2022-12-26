@@ -92,6 +92,7 @@ readCredentials().then(res=>{ //if credential doesn't exists, will create b4 cre
         req.on("end",()=>{
             console.log(body);
             body = JSON.parse(body);
+            console.log(body);
             if(checkCredentials(body.credentials)){
                 executeCommand(res,body.cmd);
             }

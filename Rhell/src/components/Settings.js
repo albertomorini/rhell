@@ -17,26 +17,39 @@ import { Storage } from '@ionic/storage';
 import md5 from 'js-md5';
 
 
-function Settings(){
+function Settings(props){
     let [IPServer,setIPServer] = useState();
     let [Username, setUsername] = useState();
     let [Password, setPassword] = useState();
     let [FontSize, setFontSize] = useState(16);
+    const store = new Storage();
+    store.create();
 
     function storeSettings(){
-        console.log(Password);
-
-        console.log("OK");
-        const store = new Storage();
-        store.create();
         store.set('Username', Username);
         store.set('Password', Password);
         store.set('FontSize', FontSize);
         store.set('IPServer', IPServer);
+        props.settingChanged(Date.now()); //just to change
     }
     function changeFontSize(value){
         setFontSize(10+(2*value)); //12,14,16,18,20
     }
+
+    useEffect(()=>{
+        try{
+            store.get('IPServer').then(IPServer=>{
+                setIPServer(IPServer);
+            });
+            store.get('Username').then(Username=>{
+                setUsername(Username);
+            })
+            store.get("FontSize").then(FontSize=>{
+                setFontSize(FontSize);
+            })
+
+        }catch(e){}
+    },[])
 
 
     const modal = useRef(null);
@@ -74,7 +87,7 @@ function Settings(){
                     <br></br>
                     <IonItem>
                     <IonLabel style={{ fontSize: FontSize }}  position="stacked">Font size</IonLabel>
-                        <IonInput type='range' default={3} min={1} max={5} onIonChange={(ev) => changeFontSize(ev.target.value)}></IonInput>
+                        <IonInput type='range' min={1} max={5} onIonChange={(ev) => changeFontSize(ev.target.value)}></IonInput>
                     </IonItem>
 
 

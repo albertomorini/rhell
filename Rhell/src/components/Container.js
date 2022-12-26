@@ -1,26 +1,24 @@
 import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonInput, IonTextarea } from "@ionic/react";
 import moment from "moment"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsPower, BsArrowClockwise, BsTerminal } from "react-icons/bs"
-
-
 import { Storage } from '@ionic/storage';
+import { executeCommand } from "./serverTalker";
 
-function Container(){
+
+
+function Container(props){
     let [Command,setCommand] = useState();
+    let [FontSize,setFontSize] = useState();
 
 
     function loadConfig(){
         const store = new Storage();
         store.create();
-        store.get('username').then(res=>{
-            console.log(res);
+        store.get('FontSize').then(res=>{
+            setFontSize(res);
         })
     }
-
-
-
-
     function shutdown(){
         //TODO ask confirm
     }
@@ -31,12 +29,20 @@ function Container(){
     }
 
     function sendCommand(){
-
+        executeCommand().then(res=>{
+            console.log(res);
+        }).catch(err=>{
+            console.log(err);
+        })
     }
+
+    useEffect(()=>{
+        loadConfig()
+    }, [props.settingsChanged]);
 
     return(
         <IonContent>
-            <h2>{moment().format("DD/MM/YYYY")}</h2>
+            <h2 style={{ fontSize: FontSize }}>{moment().format("DD/MM/YYYY")}</h2>
                 <IonButton color="warning" onClick={()=>restart()}>
                     <BsArrowClockwise size={26}></BsArrowClockwise>
                 </IonButton>
@@ -46,21 +52,18 @@ function Container(){
                 </IonButton>
 
             <br></br>
-                    <IonLabel >Command</IonLabel>
+                <IonLabel style={{fontSize: FontSize}}>Command</IonLabel>
 
-                    <IonTextarea clearOnEdit={true} autofocus={true} mode="ios" wrap="soft" autoGrow={true} onIonChange={(ev)=>setCommand(ev.target.value)}>
+                    <IonTextarea style={{ fontSize: FontSize }} clearOnEdit={true} autofocus={true} mode="ios" wrap="soft" autoGrow={true} onIonChange={(ev)=>setCommand(ev.target.value)}>
 
 
                     </IonTextarea>
 
-                    <IonButton size="large" onClick={()=>sendCommand()}>
+                      <IonButton style={{ fontSize: FontSize }} size="large" onClick={()=>sendCommand()}>
                         Send
 
                         <BsTerminal size={26}></BsTerminal>
                     </IonButton>
-
-
-<button onClick={()=>loadConfig()}>aaa</button>
         </IonContent>
     );
 }

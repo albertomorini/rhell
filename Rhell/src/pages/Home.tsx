@@ -4,9 +4,11 @@ import Settings from '../components/Settings';
 import './Home.css';
 
 import { BsGearWideConnected } from "react-icons/bs"
+import { useEffect, useState } from 'react';
 
 
 const Home: React.FC = () => {
+  let [settingsChanged,setSettingChanged] = useState();
   return (
     <IonPage>
       <IonHeader translucent={true} mode="ios">
@@ -18,8 +20,8 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <Container />
-    <Settings></Settings>
+        <Container settingsChanged={settingsChanged}/>
+        <Settings settingChanged={(a:any)=>setSettingChanged(a)}/>
 
       </IonContent>
     </IonPage>
