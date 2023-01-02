@@ -7,7 +7,6 @@ function getSocket(){
         store.get("IPServer").then(res=>{
             resolve("https://" + res + ":1999");
         });
-
     })
 }
 async function getCredentials(){
@@ -26,9 +25,13 @@ export const executeCommand = async (cmd) =>{
     return new Promise((resolve,reject)=>{
         getCredentials().then(cred=>{
             getSocket().then(socket=>{
+               
                 fetch(socket, {
                     method: "POST",
                     mode: "cors",
+                    headers: {
+                        "Access-Control-Allow-Origin": "*"
+                    },
                     body: JSON.stringify({
                         "credentials": {
                             "username": cred[0],

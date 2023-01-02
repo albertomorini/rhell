@@ -1,10 +1,10 @@
-import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonInput, IonTextarea } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonInput, IonTextarea, IonGrid, IonRow, IonCol } from "@ionic/react";
 import moment from "moment"
 import { useEffect, useState } from "react";
 import { BsPower, BsArrowClockwise, BsTerminal } from "react-icons/bs"
 import { Storage } from '@ionic/storage';
 import { executeCommand } from "./serverTalker";
-
+import "../theme/Container.css"
 
 
 function Container(props){
@@ -20,16 +20,23 @@ function Container(props){
         })
     }
     function shutdown(){
-        //TODO ask confirm
+        executeCommand("sudo shutdown").then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     function restart(){
-        //TODO: ask confirm
-        
+        executeCommand("sudo reboot").then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     function sendCommand(){
-        executeCommand().then(res=>{
+        executeCommand(Command).then(res=>{
             console.log(res);
         }).catch(err=>{
             console.log(err);
@@ -42,24 +49,31 @@ function Container(props){
 
     return(
         <IonContent>
-            <h2 style={{ fontSize: FontSize }}>{moment().format("DD/MM/YYYY")}</h2>
-                <IonButton color="warning" onClick={()=>restart()}>
-                    <BsArrowClockwise size={26}></BsArrowClockwise>
-                </IonButton>
+            <IonGrid>
+                <IonRow>
+                    <IonCol>
+                        <h2 style={{ fontSize: FontSize }}>{moment().format("DD/MM/YYYY")}</h2>
+                    </IonCol>
+                    <IonCol style={{textAlign: "right"}}>
+                        <IonButton color="warning" onClick={() => restart()}>
+                            <BsArrowClockwise size={26}></BsArrowClockwise>
+                        </IonButton>
 
-                <IonButton color="danger" onClick={()=>shutdown()}>
-                    <BsPower size={26}></BsPower>
-                </IonButton>
+                        <IonButton color="danger" onClick={() => shutdown()}>
+                            <BsPower size={26}></BsPower>
+                        </IonButton>
+                    </IonCol>
+                </IonRow>
+            </IonGrid>
 
             <br></br>
                 <IonLabel style={{fontSize: FontSize}}>Command</IonLabel>
 
-                    <IonTextarea style={{ fontSize: FontSize }} clearOnEdit={true} autofocus={true} mode="ios" wrap="soft" autoGrow={true} onIonChange={(ev)=>setCommand(ev.target.value)}>
-
+                    <IonTextarea placeholder="Insert a command" style={{fontSize: FontSize }} clearOnEdit={true} autofocus={true} className="TextBoxCMD" mode="ios" wrap="soft" autoGrow={true} onIonChange={(ev)=>setCommand(ev.target.value)}>
 
                     </IonTextarea>
 
-                      <IonButton style={{ fontSize: FontSize }} size="large" onClick={()=>sendCommand()}>
+                      <IonButton expand="block" style={{ fontSize: FontSize }}  onClick={()=>sendCommand()}>
                         Send
 
                         <BsTerminal size={26}></BsTerminal>

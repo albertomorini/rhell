@@ -85,12 +85,12 @@ function executeCommand(res,strCommand){
 
 readCredentials().then(res=>{ //if credential doesn't exists, will create b4 create server
     https.createServer(options,(req,res)=>{
-    
         let body = "";
-        
-        req.on("data",(chunk)=>{body+=chunk});
+        req.on("data",(chunk)=>{
+            body+=chunk
+        });
+
         req.on("end",()=>{
-            console.log(body);
             body = JSON.parse(body);
             console.log(body);
             if(checkCredentials(body.credentials)){
