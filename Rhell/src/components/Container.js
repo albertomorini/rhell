@@ -21,8 +21,8 @@ function Container(props){
     }
     function shutdown(){
         executeCommand("sudo shutdown").then(res => {
-            console.log(res.res);
-            //TODO: show the output
+            let output = res.res.replace("\\","\\n")
+            alert(output)
         }).catch(err => {
             console.log(err);
         })
@@ -30,7 +30,8 @@ function Container(props){
 
     function restart(){
         executeCommand("sudo reboot").then(res => {
-            console.log(res);
+            let output = res.res.replace("\\", "\\n")
+            alert(output)
         }).catch(err => {
             console.log(err);
         })
@@ -38,7 +39,8 @@ function Container(props){
 
     function sendCommand(){
         executeCommand(Command).then(res=>{
-            console.log(res);
+            let output = res.res.replace("\\", "\\n")
+            alert(output)
         }).catch(err=>{
             console.log(err);
         })
