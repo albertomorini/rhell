@@ -5,7 +5,7 @@ store.create();
 function getSocket(){
     return new Promise((resolve,reject)=>{
         store.get("IPServer").then(res=>{
-            resolve("https://" + res + ":1999");
+            resolve("http://" + res + ":1999");
         });
     })
 }
@@ -20,12 +20,10 @@ async function getCredentials(){
 }
 
 
-
 export const executeCommand = async (cmd) =>{
     return new Promise((resolve,reject)=>{
         getCredentials().then(cred=>{
             getSocket().then(socket=>{
-               
                 fetch(socket, {
                     method: "POST",
                     mode: "cors",
@@ -39,9 +37,10 @@ export const executeCommand = async (cmd) =>{
                         },
                         "cmd": cmd
                     })
-                }).then(res => resolve(res)).catch(err => reject(err));
+                }).then(res =>res.json()).then(res => resolve(res)).catch(err => reject(err));
             })
         }).catch(err=>{
+            console.log(err)
             reject(err)
         })
     });

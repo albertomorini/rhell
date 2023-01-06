@@ -14,6 +14,10 @@ Made with NodeJS.
 
 
 ### Client
+Made with Ionic/React.
 
 
+## TODO:
 
+[] https
+[] render the output

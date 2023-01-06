@@ -21,7 +21,8 @@ function Container(props){
     }
     function shutdown(){
         executeCommand("sudo shutdown").then(res => {
-            console.log(res);
+            console.log(res.res);
+            //TODO: show the output
         }).catch(err => {
             console.log(err);
         })

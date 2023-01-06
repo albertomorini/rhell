@@ -8,7 +8,7 @@ const rl = readline.createInterface({
 });
 
 
-const https = require("https");
+const http = require("http");
 const fs = require("fs");
 const port = 1999;
 const { exec } = require("child_process");
@@ -46,16 +46,19 @@ async function readCredentials(){
 }
 
 function checkCredentials(credentials) {
-    readCredentials().then(res=>{
-        if(credentials.username==res.username && credentials.password==res.password){
-            return true;
-        }else{
+    return new Promise ((resolve,reject)=>{
+        readCredentials().then(res => {
+            if (credentials.username == res.username && credentials.password == res.password) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        }).catch(err => {
+            console.log(err);
             return false;
-        }
-    }).catch(err=>{
-        console.log(err);
-        return false;
+        })
     })
+   
 }
 
 
@@ -67,24 +70,28 @@ function executeCommand(res,strCommand){
             res.writeHead({"Content-type":"application/json","Access-Control-Allow-Origin":"*"})
             res.write(error)
             res.end()
-            console.log("ERRORE"+err);
             return;
         }
         if (stderr) {
             res.writeHead({"Content-type":"application/json","Access-Control-Allow-Origin":"*"})
             res.write(stderr)
             res.end()
-            console.log(`stderr: ${stderr}`);
             return;
         }
         console.log(`stdout: ${stdout}`);
+        res.writeHead(200,{"Content-type":"application/json","Access-Control-Allow-Origin":"*"})
+        res.write(JSON.stringify({
+            "res":stdout
+        }));
+        res.end();
+        
     });
 
 }
 
 
 readCredentials().then(res=>{ //if credential doesn't exists, will create b4 create server
-    https.createServer(options,(req,res)=>{
+    http.createServer((req,res)=>{
         let body = "";
         req.on("data",(chunk)=>{
             body+=chunk
@@ -92,13 +99,15 @@ readCredentials().then(res=>{ //if credential doesn't exists, will create b4 cre
 
         req.on("end",()=>{
             body = JSON.parse(body);
-            console.log(body);
-            if(checkCredentials(body.credentials)){
-                executeCommand(res,body.cmd);
-            }
+            checkCredentials(body.credentials).then(resCredentials=>{
+                if(resCredentials){
+                    executeCommand(res,body.cmd);
+                }else{
+                    console.log("Wrong credentials sent");
+                }
+            })
         })
     }).listen(port)
     console.log("Server started at port: "+port);
 });
-
 
