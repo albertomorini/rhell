@@ -1,5 +1,5 @@
 
-
+/*
 const crypto = require('crypto');
 const readline = require("readline");
 const rl = readline.createInterface({
@@ -111,3 +111,20 @@ readCredentials().then(res=>{ //if credential doesn't exists, will create b4 cre
     console.log("Server started at port: "+port);
 });
 
+
+*/
+
+const express = require('express')
+const https = require('https');
+const privateKey = fs.readFileSync('sslcert/server.key', 'utf8');
+const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+const port= 1919;
+
+
+const app = express()
+
+app.post('/authenticate', function (req, res) {
+    res.send('Hello World')
+})
+
+https.createServer({ key: privateKey, cert: certificate },app).listen(port);
