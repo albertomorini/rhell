@@ -114,17 +114,26 @@ readCredentials().then(res=>{ //if credential doesn't exists, will create b4 cre
 
 */
 
+const PORT= 1919;
 const express = require('express')
 const https = require('https');
-const privateKey = fs.readFileSync('sslcert/server.key', 'utf8');
-const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
-const port= 1919;
-
-
+const fs = require("fs")
 const app = express()
 
+const options = {
+    key: fs.readFileSync("./sslcert/key.pem"),
+    cert: fs.readFileSync("./sslcert/cert.pem")
+}
+////////////////////////////////////
+
+
 app.post('/authenticate', function (req, res) {
+    console.log(req.body)
+    res.send('Hello World')
+});
+app.all("/",(req,res)=>{
     res.send('Hello World')
 })
 
-https.createServer({ key: privateKey, cert: certificate },app).listen(port);
+
+https.createServer(options, (app)).listen(PORT);

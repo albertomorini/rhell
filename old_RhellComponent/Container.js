@@ -1,10 +1,10 @@
-import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonInput, IonTextarea, IonGrid, IonRow, IonCol } from "@ionic/react";
-import moment from "moment"
+import { IonButton, IonContent, IonLabel, IonTextarea, IonGrid, IonRow, IonCol } from "@ionic/react";
+import moment from "moment";
 import { useEffect, useState } from "react";
-import { BsPower, BsArrowClockwise, BsTerminal } from "react-icons/bs"
+import { BsPower, BsArrowClockwise, BsTerminal } from "react-icons/bs";
 import { Storage } from '@ionic/storage';
-import { executeCommand } from "./serverTalker";
-import "../theme/Container.css"
+import { executeCommand } from "./Rhell/src/components/serverTalker";
+import "../theme/Container.css";
 
 
 function Container(props){

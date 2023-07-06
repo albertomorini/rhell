@@ -2,3 +2,6 @@
 .DS_Store
 
 server/node_modules/*
+server/ssl/csr.pem
+server/ssl/key.pem
+.gitignore
