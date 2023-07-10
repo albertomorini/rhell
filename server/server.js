@@ -114,11 +114,12 @@ readCredentials().then(res=>{ //if credential doesn't exists, will create b4 cre
 
 */
 
-const PORT= 1919;
+const PORT= 4321;
 const express = require('express')
 const https = require('https');
 const fs = require("fs")
 const app = express()
+const mongoExecutor = require("./mongoExecutor.js")
 
 const options = {
     key: fs.readFileSync("./sslcert/key.pem"),
@@ -128,12 +129,41 @@ const options = {
 
 
 app.post('/authenticate', function (req, res) {
-    console.log(req.body)
-    res.send('Hello World')
+    var body="";
+    req.on("data",chunk=>{
+        body+=chunk
+    })
+    req.on("end",()=>{
+        console.log(JSON.parse(body))
+        mongoExecutor.authenticate(body.username,body.password).then(resQuery=>{
+            console.log(resQuery)
+        })
+
+    })
 });
-app.all("/",(req,res)=>{
+
+
+
+
+app.get("/loadDashboard",(req,res)=>{
     res.send('Hello World')
+})
+app.get("/service",(req,res)=>{
+    //show single service
+    //TODO: work url ID
+})
+app.post("/service",(req,res)=>{
+    //create or update a service
+})
+app.delete("/service",(req,res)=>{
+    //DELETE THE SERVICE
+})
+
+app.post("/executeBash",(req,res)=>{
+
 })
 
 
 https.createServer(options, (app)).listen(PORT);
+
+mongoExecutor.test()
