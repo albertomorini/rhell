@@ -21,9 +21,9 @@ const Tab1: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         {(User==null)?
-          <Login />
+          <Login setUser={(obj:Object)=>setUser(Object)}/>
             :
-          <Launcher />
+          <Launcher/>
       }
     </IonContent>
   );

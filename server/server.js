@@ -127,6 +127,11 @@ const options = {
 }
 ////////////////////////////////////
 
+function sendResponse(res, status, body, contentType ="Application/JSON"){
+    res.writeHead(status, { "Content-type": contentType, "Access-Control-Allow-Origin": "*" })
+    res.write(JSON.stringify(body))
+    res.send()
+}
 
 app.post('/authenticate', function (req, res) {
     var body="";
@@ -134,11 +139,8 @@ app.post('/authenticate', function (req, res) {
         body+=chunk
     })
     req.on("end",()=>{
-        console.log(JSON.parse(body))
-        mongoExecutor.authenticate(body.username,body.password).then(resQuery=>{
-            console.log(resQuery)
-        })
-
+        body = JSON.parse(body)
+       
     })
 });
 
@@ -164,6 +166,29 @@ app.post("/executeBash",(req,res)=>{
 })
 
 
-https.createServer(options, (app)).listen(PORT);
+https.createServer(options, (req,res)=>{
+    const body="";
+    req.on("data",(chunk)=>{
+        body+=chunk
+    });
 
-mongoExecutor.test()
+    req.on("end",()=>{
+        try{
+            body = JSON.parse(body)
+        }catch(ex){
+            //Not json or bodyless
+        }
+        if (req.url =="/authenticate"){
+            mongoExecutor.authenticate(body.username, body.password).then(resQuery => {
+                sendResponse(res, (resQuery != null) ? 200 : 403, resQuery)
+            })
+        }
+    })
+
+}).listen(PORT);
+
+// mongoExecutor.insertUser("alby","alby")
+// mongoExecutor.authenticate("alby","alby").then(resquery=>{
+//     console.log(resquery)
+// })
+// mongoExecutor.deleteUsers()

@@ -4,7 +4,7 @@ import { doRequest, loadConfig } from "../HttpRequester";
 import md5 from "md5";
 
 
-export default function Login(){
+export default function Login(props){
      const [Username,setUsername] = useState();
      const [Password,setPassword] = useState();
 
@@ -20,8 +20,13 @@ export default function Login(){
           doRequest("authenticate",{
                "username":Username,
                "password": md5(Password)
-          }).then(res=>res.json()).then(res=>{
-
+          }).then(res=>{
+               if(res.status==200){
+                    res.json().then(r=>{
+                         console.log(r)
+                         props.setUser(r)
+                    })
+               }
           });
      }
      function enterPressed(ev) {

@@ -18,7 +18,7 @@ async function authenticate(username,password){
         if (resAuth.length == 0) { //not found or error return null
             return null;
         } else {
-            return resAuth
+            return resAuth[0]
         }
     }).catch(err=>{
         console.log(err)
@@ -26,16 +26,20 @@ async function authenticate(username,password){
 }
 
 async function insertUser(username,password){
-    createDatabase();
     return database.collection(COLLECTION_USERS).insertOne({"username":username,"psw":password}).then(resInsert=>{
-        console.log(resInsert)
+
     })
 }
 
+async function deleteUsers(){
+    return database.collection(COLLECTION_USERS).deleteMany({}).then(resDelete=>{
+        console.log(resDelete)
+    })
+}
 
 module.exports={
     authenticate: authenticate,
     insertUser: insertUser,
-    test: test
+    deleteUsers: deleteUsers
 }
 
