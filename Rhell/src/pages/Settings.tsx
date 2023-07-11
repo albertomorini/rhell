@@ -12,7 +12,7 @@ const Tab2: React.FC = () => {
     store.create();
     store.set("serverName",ServerName);
   }
-  function enterPressed(ev){
+  function enterPressed(ev : any){
     if (ev.key == "Enter") { //if pressend enter, process credentials
       saveServerConfig()
     } 

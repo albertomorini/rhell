@@ -115,10 +115,8 @@ readCredentials().then(res=>{ //if credential doesn't exists, will create b4 cre
 */
 
 const PORT= 4321;
-const express = require('express')
 const https = require('https');
 const fs = require("fs")
-const app = express()
 const mongoExecutor = require("./mongoExecutor.js")
 
 const options = {
@@ -130,44 +128,21 @@ const options = {
 function sendResponse(res, status, body, contentType ="Application/JSON"){
     res.writeHead(status, { "Content-type": contentType, "Access-Control-Allow-Origin": "*" })
     res.write(JSON.stringify(body))
-    res.send()
+    res.end()
 }
 
-app.post('/authenticate', function (req, res) {
-    var body="";
-    req.on("data",chunk=>{
-        body+=chunk
-    })
-    req.on("end",()=>{
-        body = JSON.parse(body)
-       
-    })
-});
-
-
-
-
-app.get("/loadDashboard",(req,res)=>{
-    res.send('Hello World')
-})
-app.get("/service",(req,res)=>{
-    //show single service
-    //TODO: work url ID
-})
-app.post("/service",(req,res)=>{
-    //create or update a service
-})
-app.delete("/service",(req,res)=>{
-    //DELETE THE SERVICE
-})
-
-app.post("/executeBash",(req,res)=>{
-
-})
-
+function isAuthenticated(username,password){
+    return mongoExecutor.authenticate(username,password).then(resQuery=>{
+        if(resQuery!=null){
+            return true;
+        }else{
+            return false;
+        }
+    });
+}
 
 https.createServer(options, (req,res)=>{
-    const body="";
+    let body="";
     req.on("data",(chunk)=>{
         body+=chunk
     });
@@ -182,9 +157,25 @@ https.createServer(options, (req,res)=>{
             mongoExecutor.authenticate(body.username, body.password).then(resQuery => {
                 sendResponse(res, (resQuery != null) ? 200 : 403, resQuery)
             })
-        }
-    })
+            if (isAuthenticated(body.username, body.password)) {
+                //loadswidget
+            }else{
 
+            }
+        }
+        ////////////////////////////////////
+        if(req.url=="/createWidget"){
+            if (isAuthenticated(body.username, body.password)) {
+
+            }
+        }
+        ////////////////////////////////////
+        if(req.url=="/executeShellCmd"){
+
+        }
+
+
+    });
 }).listen(PORT);
 
 // mongoExecutor.insertUser("alby","alby")

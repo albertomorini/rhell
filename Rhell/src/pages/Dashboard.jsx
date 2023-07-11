@@ -1,11 +1,14 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import '../theme/Dashboard.css';
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import Login from "../components/Login.jsx"
 import Launcher from "../components/Launcher.jsx"
 
+export const MyContext = createContext();
 
-const Tab1: React.FC = () => {
+
+const Dashboard = () => {
+
   const [User,setUser]=useState(null);
 
   return (
@@ -20,13 +23,21 @@ const Tab1: React.FC = () => {
             <IonTitle size="large">Rhell</IonTitle>
           </IonToolbar>
         </IonHeader>
+      <MyContext.Provider value={
+        {
+          "User": {User,setUser},
+        }
+      }>
+
         {(User==null)?
-          <Login setUser={(obj:Object)=>setUser(Object)}/>
+          <Login/>
             :
-          <Launcher/>
+          <Launcher />
       }
+
+      </MyContext.Provider>
     </IonContent>
   );
 };
 
-export default Tab1;
+export default Dashboard;

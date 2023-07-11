@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IonButton, IonContent, IonInput, IonLabel } from '@ionic/react';
 import { doRequest, loadConfig } from "../HttpRequester";
 import md5 from "md5";
+import { MyContext } from "../pages/Dashboard";
 
 
-export default function Login(props){
+export default function Login(){
      const [Username,setUsername] = useState();
      const [Password,setPassword] = useState();
+     const ctx = useContext(MyContext)
 
      useEffect(()=>{
           loadConfig().then(config=>{
@@ -23,8 +25,7 @@ export default function Login(props){
           }).then(res=>{
                if(res.status==200){
                     res.json().then(r=>{
-                         console.log(r)
-                         props.setUser(r)
+                         ctx.User.setUser(r)
                     })
                }
           });
