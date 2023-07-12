@@ -23,6 +23,8 @@ const Dashboard = () => {
             <IonTitle size="large">Rhell</IonTitle>
           </IonToolbar>
         </IonHeader>
+
+        
       <MyContext.Provider value={
         {
           "User": {User,setUser},
@@ -34,7 +36,6 @@ const Dashboard = () => {
             :
           <Launcher />
       }
-
       </MyContext.Provider>
     </IonContent>
   );

@@ -153,17 +153,19 @@ https.createServer(options, (req,res)=>{
         }catch(ex){
             //Not json or bodyless
         }
+
         if (req.url =="/authenticate"){
             mongoExecutor.authenticate(body.username, body.password).then(resQuery => {
                 sendResponse(res, (resQuery != null) ? 200 : 403, resQuery)
-            })
-            if (isAuthenticated(body.username, body.password)) {
-                //loadswidget
-            }else{
-
-            }
+            });
         }
         ////////////////////////////////////
+        if(req.url=="/mngWidget"){
+            mongoExecutor.mngWidget(body.action, body.username, body?.title, body?.command, body?.type, body?.IDWidget).then(resQuery=>{
+                sendResponse(res,200,resQuery)
+            })
+        }
+
         if(req.url=="/createWidget"){
             if (isAuthenticated(body.username, body.password)) {
 

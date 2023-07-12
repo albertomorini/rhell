@@ -1,7 +1,8 @@
-import { IonButton, IonCard, IonCardContent, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonIcon, IonInput, IonLabel, IonModal, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from "@ionic/react";
-import React, { useRef, useState } from "react";
+import { IonButton, IonCard, IonCardContent, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonIcon, IonInput, IonLabel, IonModal, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import React, { useContext, useRef, useState } from "react";
 import { closeCircle } from 'ionicons/icons';
 import { doRequest } from "../HttpRequester";
+import { MyContext } from "../pages/Dashboard";
 
 
 export default function AddWidget(props){
@@ -9,18 +10,24 @@ export default function AddWidget(props){
      const [WidgetType,setWidgetType] = useState("");
      const [Title,setTitle] = useState("");
      const [Command,setCommand] = useState("");
+     const ctx = useContext(MyContext);
+     const [Message,setMessage] = useState();
 
      function saveNewWidget(){
           if(WidgetType!="" && Title!="" && Command!=""){
-               doRequest("saveNewWidget",{
-                    "type": WidgetType,
+               doRequest("mngWidget",{
+                    "action":"I",
+                    "username": ctx.User.Username,
                     "title": Title,
-                    "commad" : Command
+                    "type": WidgetType,
+                    "command" : Command
                }).then(res=>{
                     if(res.status==200){
-
+                         props.reloadList();
+                         refAddWidget?.current?.dismiss();
                     }else{
-                         //TODO: error saving new widget
+                         setMessage("Error saving new widget, try again...")
+                         setTimeout(()=>setMessage(""),2500);
                     }
                })
           }
@@ -64,12 +71,10 @@ export default function AddWidget(props){
                     <br/>
                     <br/>
                     <IonButton expand="block" color="success" onClick={()=>saveNewWidget()}>Save</IonButton>
-               
+
+                    <IonText>{Message}</IonText>
+
                </IonContent>
-
-
-               
-
           </IonModal>
           </>
      )

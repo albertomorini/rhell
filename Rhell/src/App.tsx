@@ -52,7 +52,7 @@ const App: React.FC = () => (
         </IonRouterOutlet>
         
         
-        <IonTabBar slot="bottom">
+        <IonTabBar slot="bottom" mode="ios">
           <IonTabButton tab="Dashboard" href="/Dashboard">
             <IonIcon aria-hidden="true" icon={apps} />
             <IonLabel>Dashboard</IonLabel>
