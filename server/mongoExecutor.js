@@ -32,9 +32,9 @@ async function mngWidget(action, username, title=null, command=null, type=null, 
             "type": type
         })
     }else if(action=="D"){
-        return database.collection(COLLECTION_WIDGETS).deleteOne(ObjectId(null))
+        return database.collection(COLLECTION_WIDGETS).deleteOne({ _id: new ObjectId(IDWidget)})
     }else if (action=="U"){
-
+        //TODO: 
     }
 }
 

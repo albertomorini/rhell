@@ -59,7 +59,7 @@ export default function Launcher(){
                               <IonCardContent >
                                    <IonText>{widget.command}</IonText>
 
-                                   <IonButton color="danger" slot="end">
+                                   <IonButton color="danger" slot="end" onClick={()=>deleteWidget(widget._id)}>
                                         <IonIcon icon={trashBin}/>
                                    </IonButton>
                                    <IonButton color="warning" >

@@ -161,7 +161,7 @@ https.createServer(options, (req,res)=>{
         }
         ////////////////////////////////////
         if(req.url=="/mngWidget"){
-            mongoExecutor.mngWidget(body.action, body.username, body?.title, body?.command, body?.type, body?.IDWidget).then(resQuery=>{
+            mongoExecutor.mngWidget(body.action, body.username, body?.title, body?.command, body?.type, body?.WidgetID).then(resQuery=>{
                 sendResponse(res,200,resQuery)
             })
         }
