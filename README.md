@@ -10,3 +10,6 @@ Client-Server project which also can execute shell command (ssh like) via HTTPS.
 
 
 WIP
+
+
+IDEA: for web widgets => retrieve the favicon and/or title of the webpage

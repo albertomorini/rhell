@@ -131,15 +131,6 @@ function sendResponse(res, status, body, contentType ="Application/JSON"){
     res.end()
 }
 
-function isAuthenticated(username,password){
-    return mongoExecutor.authenticate(username,password).then(resQuery=>{
-        if(resQuery!=null){
-            return true;
-        }else{
-            return false;
-        }
-    });
-}
 
 https.createServer(options, (req,res)=>{
     let body="";
@@ -160,20 +151,15 @@ https.createServer(options, (req,res)=>{
             });
         }
         ////////////////////////////////////
-        if(req.url=="/mngWidget"){
+        if(req.url=="/mngWidget"){ //TODO: authenticate endpoint
             mongoExecutor.mngWidget(body.action, body.username, body?.title, body?.command, body?.type, body?.WidgetID).then(resQuery=>{
                 sendResponse(res,200,{"data":resQuery})
             })
         }
 
-        if(req.url=="/createWidget"){
-            if (isAuthenticated(body.username, body.password)) {
-
-            }
-        }
         ////////////////////////////////////
-        if(req.url=="/executeShellCmd"){
-
+        if(req.url=="execShell"){ //TODO: authenticate endpoint
+            //TODO: child process then return the output
         }
 
 
