@@ -156,13 +156,13 @@ https.createServer(options, (req,res)=>{
 
         if (req.url =="/authenticate"){
             mongoExecutor.authenticate(body.username, body.password).then(resQuery => {
-                sendResponse(res, (resQuery != null) ? 200 : 403, resQuery)
+                sendResponse(res, (resQuery != null) ? 200 : 403, {"data":resQuery})
             });
         }
         ////////////////////////////////////
         if(req.url=="/mngWidget"){
             mongoExecutor.mngWidget(body.action, body.username, body?.title, body?.command, body?.type, body?.WidgetID).then(resQuery=>{
-                sendResponse(res,200,resQuery)
+                sendResponse(res,200,{"data":resQuery})
             })
         }
 

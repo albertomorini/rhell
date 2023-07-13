@@ -17,8 +17,9 @@ export default function Launcher(){
                "action":"R",
                "username":ctx.User.Username
           }).then(res=>res.json()).then(res=>{
-               console.log(res)
-               setListOfWidget(res)
+               setListOfWidget(res.data)
+          }).catch(err=>{
+               console.log("Error: "+err);
           })
      }
      function deleteWidget(WidgetID){
@@ -34,10 +35,29 @@ export default function Launcher(){
                }
           })
      }
+
      function editWidget(){
           //IDEA: reopen popup?
      }
-     function playCommand(){
+     function execShell(WidgetID){
+          doRequest("execShell",{
+               "WidgetID": WidgetID,
+               "username": ctx.User.Username
+          }).then(res=>{
+               //TODO: SHOW RESPONSE
+          }).catch(err=>{
+
+          })
+     }
+
+     function playCommand(widget){
+          if(widget.type=="shell"){
+               execShell(widget._id);
+          }else if(widget.type=="web"){
+               
+               console.log(widget.command);
+               window.open(widget.command);
+          }
           //EXECUTE
      }
 
@@ -47,34 +67,33 @@ export default function Launcher(){
 
      return(
           <IonContent className="ion-padding" mode="ios">
-               <IonGrid>
-               <IonRow>
-               {ListOfWidget?.map((widget,index)=>(
-                    <IonCol size="4">
-                         <IonCard>
-                              <IonCardTitle>
-                                   {widget.title}
-                              </IonCardTitle>
-                              <IonCardSubtitle>{widget.type}</IonCardSubtitle>
-                              <IonCardContent >
-                                   <IonText>{widget.command}</IonText>
+               <AddWidget reloadList={() => getWidgets()} />
 
-                                   <IonButton color="danger" slot="end" onClick={()=>deleteWidget(widget._id)}>
-                                        <IonIcon icon={trashBin}/>
-                                   </IonButton>
-                                   <IonButton color="warning" >
-                                        <IonIcon icon={pencil}/>
-                                   </IonButton>
-                                   <IonButton color="secondary">
-                                        <IonIcon icon={play}/>
-                                   </IonButton>
-                              </IonCardContent>
-                         </IonCard>
-                    </IonCol>
-               ))}
-               </IonRow>
+               <IonGrid>
+                    <IonRow>
+                    {ListOfWidget?.map((widget,index)=>(
+                         <IonCol size="4">
+                              <IonCard button="true" onClick={()=>playCommand(widget)} color="dark" mode="ios">
+                                   <IonCardTitle>
+                                        {widget.title}
+                                   </IonCardTitle>
+                                   <IonCardSubtitle>{widget.type}</IonCardSubtitle>
+                                   <IonCardContent >
+                                        <IonText>{widget.command}</IonText>
+
+                                        <IonButton color="danger" slot="end" onClick={()=>deleteWidget(widget._id)}>
+                                             <IonIcon icon={trashBin}/>
+                                        </IonButton>
+                                        <IonButton color="warning" >
+                                             <IonIcon icon={pencil}/>
+                                        </IonButton>
+                                       
+                                   </IonCardContent>
+                              </IonCard>
+                         </IonCol>
+                    ))}
+                    </IonRow>
                </IonGrid>
-               <AddWidget reloadList={()=>getWidgets()}/>
           </IonContent>
      )
 }
