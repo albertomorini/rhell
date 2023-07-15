@@ -1,15 +1,17 @@
 
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonRow, IonText } from "@ionic/react";
-import React, { useContext, useEffect, useState } from "react";
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AddWidget from "./AddWidget";
 import { doRequest } from "../HttpRequester";
 import { MyContext } from "../pages/Dashboard";
-import { pencil, play, trashBin } from "ionicons/icons";
+import { closeCircle, pencil, play, trashBin } from "ionicons/icons";
 
 
 
 export default function Launcher(){
      const [ListOfWidget,setListOfWidget]= useState([])
+     const [OutputShell,setOutputShell] = useState(null);
+     const refOutputShell = useRef();
      const ctx = useContext(MyContext)
 
      function getWidgets(){
@@ -39,26 +41,30 @@ export default function Launcher(){
      function editWidget(){
           //IDEA: reopen popup?
      }
-     function execShell(WidgetID){
+     function execShell(command){
           doRequest("execShell",{
-               "WidgetID": WidgetID,
+               "command": command,
                "username": ctx.User.Username
-          }).then(res=>{
-               //TODO: SHOW RESPONSE
+          }).then(res=>res.json()).then(res=>{
+               setOutputShell(res.data);
+               console.log(res.data);
+               refOutputShell?.current?.present();
           }).catch(err=>{
-
+               setOutputShell(err);
+               refOutputShell?.current?.present();
           })
      }
 
+     /**
+      * EXECUTE the command associated to the widget
+      * @param {Object} widget the widget clicked
+      */
      function playCommand(widget){
           if(widget.type=="shell"){
-               execShell(widget._id);
+               execShell(widget.command);
           }else if(widget.type=="web"){
-               
-               console.log(widget.command);
                window.open(widget.command);
           }
-          //EXECUTE
      }
 
      useEffect(()=>{
@@ -68,7 +74,24 @@ export default function Launcher(){
      return(
           <IonContent className="ion-padding" mode="ios">
                <AddWidget reloadList={() => getWidgets()} />
-
+               <IonModal ref={refOutputShell}>
+                    <IonHeader>
+                         <IonToolbar>
+                              <IonTitle>Output shell</IonTitle>
+                              <IonButton color="danger" slot="end" onClick={() => {
+                                   refOutputShell?.current?.dismiss()
+                                   setOutputShell(null)
+                              }}>
+                                   <IonIcon icon={closeCircle} />
+                              </IonButton>
+                         </IonToolbar>
+                    </IonHeader>
+                    <IonContent className="ion-padding">
+                         <div style={{height:"100%",borderRadius: "9px",border: "2px solid black"}} className="ion-padding">
+                              {OutputShell}
+                         </div>
+                    </IonContent>
+               </IonModal>
                <IonGrid>
                     <IonRow>
                     {ListOfWidget?.map((widget,index)=>(
@@ -97,6 +120,5 @@ export default function Launcher(){
           </IonContent>
      )
 }
-
 
 /* <IonCardSubtitle>{widget._id}</IonCardSubtitle> */
