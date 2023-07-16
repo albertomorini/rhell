@@ -5,6 +5,7 @@ import AddWidget from "./AddWidget";
 import { doRequest } from "../HttpRequester";
 import { MyContext } from "../pages/Dashboard";
 import { closeCircle, pencil, play, trashBin } from "ionicons/icons";
+import ImmediateShell from "./ImmediateShell";
 
 
 
@@ -115,6 +116,7 @@ export default function Launcher(){
                               </IonCard>
                          </IonCol>
                     ))}
+                    <ImmediateShell execShell={(cmd)=>execShell(cmd)}/>
                     </IonRow>
                </IonGrid>
           </IonContent>
