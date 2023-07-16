@@ -18,7 +18,8 @@ export default function Launcher(){
      function getWidgets(){
           doRequest("mngWidget",{
                "action":"R",
-               "username":ctx.User.Username
+               "username": ctx.User.User.Username,
+               "password": ctx.User.User.Password
           }).then(res=>res.json()).then(res=>{
                setListOfWidget(res.data)
           }).catch(err=>{
@@ -29,6 +30,7 @@ export default function Launcher(){
           doRequest("mngWidget",{
                "action":"D",
                "username": ctx.User.Username,
+               "password": ctx.User.User.Password,
                "WidgetID": WidgetID
           }).then(res=>{
                if(res.status==200){
@@ -45,7 +47,8 @@ export default function Launcher(){
      function execShell(command){
           doRequest("execShell",{
                "command": command,
-               "username": ctx.User.Username
+               "username": ctx.User.User.Username,
+               "password": ctx.User.User.Password
           }).then(res=>res.json()).then(res=>{
                setOutputShell(res.data);
                console.log(res.data);

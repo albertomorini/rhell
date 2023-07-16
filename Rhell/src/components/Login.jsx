@@ -25,7 +25,7 @@ export default function Login(){
           }).then(res=>{
                if(res.status==200){
                     res.json().then(r=>{
-                         ctx.User.setUser(r)
+                         ctx.User.setUser(r.data)
                     })
                }
           });

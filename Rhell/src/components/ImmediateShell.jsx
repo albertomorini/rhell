@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonHeader, IonIcon, IonLabel, IonModal, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonHeader, IonIcon, IonLabel, IonModal, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import { closeCircle } from "ionicons/icons";
 
 

@@ -58,40 +58,51 @@ function execShell(command, callback) {
     });
 };
 
+async function isAuthenticated(username,password){
+    return mongoExecutor.authenticate(username,password).then(resQuery=>{
+        if(resQuery==null){
+            return false;
+        }else{
+            return true;
+        }
+    })
+}
+
 https.createServer(options, (req,res)=>{
     let body="";
     req.on("data",(chunk)=>{
         body+=chunk
     });
 
-    req.on("end",()=>{
+    req.on("end", async ()=>{
         try{
             body = JSON.parse(body)
         }catch(ex){
             //Not json or bodyless
         }
 
-        if (req.url =="/authenticate"){
-            mongoExecutor.authenticate(body.username, body.password).then(resQuery => {
-                sendResponse(res, (resQuery != null) ? 200 : 403, {"data":resQuery})
-            });
+        if (await isAuthenticated(body.username, body.password)){
+            if (req.url =="/authenticate"){
+                sendResponse(res,200,{"data":{
+                    "Username":body.username,
+                    "Password":body.password
+                }})
+            }
+            ////////////////////////////////////
+            if(req.url=="/mngWidget"){
+                mongoExecutor.mngWidget(body.action, body.username, body?.title, body?.command, body?.type, body?.WidgetID).then(resQuery=>{
+                    sendResponse(res,200,{"data":resQuery})
+                })
+            }
+            ////////////////////////////////////
+            if(req.url=="/execShell"){
+                execShell(body.command,(output)=>{
+                    sendResponse(res,200,{"data":output})
+                });
+            }
+        }else{
+            sendResponse(res,403,{"data":"Wrong user or password"});
         }
-        ////////////////////////////////////
-        if(req.url=="/mngWidget"){ //TODO: authenticate endpoint
-            mongoExecutor.mngWidget(body.action, body.username, body?.title, body?.command, body?.type, body?.WidgetID).then(resQuery=>{
-                sendResponse(res,200,{"data":resQuery})
-            })
-        }
-
-        ////////////////////////////////////
-        if(req.url=="/execShell"){ //TODO: authenticate endpoint
-            execShell(body.command,(output)=>{
-                sendResponse(res,200,{"data":output})
-            });
-
-        }
-
-
     });
 }).listen(PORT);
 

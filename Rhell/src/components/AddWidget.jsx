@@ -23,7 +23,8 @@ export default function AddWidget(props){
           if(WidgetType!="" && Title!="" && Command!=""){
                doRequest("mngWidget",{
                     "action":"I",
-                    "username": ctx.User.Username,
+                    "username": ctx.User.User.Username,
+                    "password":ctx.User.User.Password,
                     "title": Title,
                     "type": WidgetType,
                     "command" : Command

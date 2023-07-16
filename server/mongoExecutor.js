@@ -23,6 +23,9 @@ async function authenticate(username,password){
 
 async function mngWidget(action, username, title=null, command=null, type=null, IDWidget=null){
     if(action=="R"){
+        database.collection(COLLECTION_WIDGETS).find({}).toArray().then(res=>{
+            console.log(res)
+        })
         return database.collection(COLLECTION_WIDGETS).find({"username":username}).toArray();
     }else if(action=="I"){
         return database.collection(COLLECTION_WIDGETS).insertOne({

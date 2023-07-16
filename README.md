@@ -16,4 +16,4 @@ WIP
 
 - IDEA: for web widgets => retrieve the favicon and/or title of the webpage
 - auth
-- widget interactive command send to shell (old walletter)
+- UI
