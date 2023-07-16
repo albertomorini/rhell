@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonHeader, IonIcon, IonLabel, IonModal, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import { closeCircle } from "ionicons/icons";
-
+import "../theme/CardWidget.css"
 
 export default function ImmediateShell(props){
      
@@ -10,8 +10,8 @@ export default function ImmediateShell(props){
 
      return(
           <>
-               <IonCol size="4">
-                    <IonCard button="true" onClick={() => refImmShell?.current?.present()} color="dark" mode="ios">
+               <IonCol size="3">
+                    <IonCard className="CardWidget" button="true" onClick={() => refImmShell?.current?.present()} color="dark" mode="ios">
                          <IonCardTitle color="danger">Immediate shell</IonCardTitle>
                          <IonCardSubtitle>SHELL</IonCardSubtitle>
                     </IonCard>

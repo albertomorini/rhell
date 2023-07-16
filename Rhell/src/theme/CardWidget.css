@@ -1,0 +1,13 @@
+
+.CardWidget{
+     height: 80%;    
+     font-style: italic;
+}
+.CardTitle{
+     text-align: center;
+     font-style: normal;
+     font-weight: bold;
+}
+.CardButtons{
+     float: right;
+}

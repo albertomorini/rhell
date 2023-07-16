@@ -1,5 +1,4 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import '../theme/Dashboard.css';
 import { createContext, useState } from 'react';
 import Login from "../components/Login.jsx"
 import Launcher from "../components/Launcher.jsx"

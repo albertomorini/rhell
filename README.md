@@ -17,3 +17,4 @@ WIP
 - IDEA: for web widgets => retrieve the favicon and/or title of the webpage
 - auth
 - UI
+     - fix delete button also play

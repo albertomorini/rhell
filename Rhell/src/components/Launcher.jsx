@@ -1,11 +1,12 @@
 
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonModal, IonRow, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import AddWidget from "./AddWidget";
 import { doRequest } from "../HttpRequester";
 import { MyContext } from "../pages/Dashboard";
 import { closeCircle, pencil, play, trashBin } from "ionicons/icons";
 import ImmediateShell from "./ImmediateShell";
+import "../theme/Cardwidget.css"
 
 
 
@@ -29,7 +30,7 @@ export default function Launcher(){
      function deleteWidget(WidgetID){
           doRequest("mngWidget",{
                "action":"D",
-               "username": ctx.User.Username,
+               "username": ctx.User.User.Username,
                "password": ctx.User.User.Password,
                "WidgetID": WidgetID
           }).then(res=>{
@@ -77,7 +78,6 @@ export default function Launcher(){
 
      return(
           <IonContent className="ion-padding" mode="ios">
-               <AddWidget reloadList={() => getWidgets()} />
                <IonModal ref={refOutputShell}>
                     <IonHeader>
                          <IonToolbar>
@@ -99,19 +99,19 @@ export default function Launcher(){
                <IonGrid>
                     <IonRow>
                     {ListOfWidget?.map((widget,index)=>(
-                         <IonCol size="4">
-                              <IonCard button="true" onClick={()=>playCommand(widget)} color="dark" mode="ios">
-                                   <IonCardTitle>
+                         <IonCol size="3">
+                              <IonCard button="true" onClick={()=>playCommand(widget)} color="dark" mode="ios" className="CardWidget">
+                                   <IonCardTitle className="CardTitle">
                                         {widget.title}
                                    </IonCardTitle>
                                    <IonCardSubtitle>{widget.type}</IonCardSubtitle>
                                    <IonCardContent >
                                         <IonText>{widget.command}</IonText>
 
-                                        <IonButton color="danger" slot="end" onClick={()=>deleteWidget(widget._id)}>
+                                        <IonButton className="CardButtons" color="danger" slot="end" onClick={()=>deleteWidget(widget._id)}>
                                              <IonIcon icon={trashBin}/>
                                         </IonButton>
-                                        <IonButton color="warning" >
+                                        <IonButton color="warning"  className="CardButtons">
                                              <IonIcon icon={pencil}/>
                                         </IonButton>
                                        
@@ -122,6 +122,8 @@ export default function Launcher(){
                     <ImmediateShell execShell={(cmd)=>execShell(cmd)}/>
                     </IonRow>
                </IonGrid>
+               <AddWidget reloadList={() => getWidgets()} />
+
           </IonContent>
      )
 }

@@ -1,5 +1,4 @@
 import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import '../theme/Settings.css';
 import { useState } from 'react';
 import { Storage } from '@ionic/storage';
 
