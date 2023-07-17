@@ -1,10 +1,9 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
 import { createContext, useState } from 'react';
-import Login from "../components/Login.jsx"
-import Launcher from "../components/Launcher.jsx"
+import Login from "../components/Login.jsx";
+import Launcher from "../components/Launcher.jsx";
 
 export const MyContext = createContext();
-
 
 const Dashboard = () => {
 

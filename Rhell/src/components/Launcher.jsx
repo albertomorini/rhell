@@ -1,12 +1,12 @@
 
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonModal, IonRow, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonCard, IonCardContent, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import AddWidget from "./AddWidget";
 import { doRequest } from "../HttpRequester";
 import { MyContext } from "../pages/Dashboard";
-import { closeCircle, pencil, play, trashBin } from "ionicons/icons";
+import { closeCircle, pencil, trashBin } from "ionicons/icons";
 import ImmediateShell from "./ImmediateShell";
-import "../theme/Cardwidget.css"
+import "../theme/Cardwidget.css";
 
 
 
@@ -15,7 +15,8 @@ export default function Launcher(){
      const [OutputShell,setOutputShell] = useState(null);
      const refOutputShell = useRef();
      const ctx = useContext(MyContext)
-
+     
+     // get all widgets of user
      function getWidgets(){
           doRequest("mngWidget",{
                "action":"R",
@@ -27,6 +28,7 @@ export default function Launcher(){
                console.log("Error: "+err);
           })
      }
+     //delete a widget clicked
      function deleteWidget(WidgetID){
           doRequest("mngWidget",{
                "action":"D",
@@ -37,14 +39,17 @@ export default function Launcher(){
                if(res.status==200){
                     getWidgets();
                }else{
-                    //TODO: log error
+                    console.log("Error, status request: " + res.status);
                }
+          }).catch(err=>{
+               console.log("Error: " + err);
           })
      }
 
      function editWidget(){
           //IDEA: reopen popup?
      }
+     //EXEC A SHELL COMMAND
      function execShell(command){
           doRequest("execShell",{
                "command": command,
@@ -78,6 +83,10 @@ export default function Launcher(){
 
      return(
           <IonContent className="ion-padding" mode="ios">
+               {
+                    //output modal shell command
+               }
+
                <IonModal ref={refOutputShell}>
                     <IonHeader>
                          <IonToolbar>
@@ -96,18 +105,19 @@ export default function Launcher(){
                          </div>
                     </IonContent>
                </IonModal>
+       
+       
                <IonGrid>
                     <IonRow>
                     {ListOfWidget?.map((widget,index)=>(
-                         <IonCol size="3">
+                         <IonCol size="4">
                               <IonCard button="true" onClick={()=>playCommand(widget)} color="dark" mode="ios" className="CardWidget">
                                    <IonCardTitle className="CardTitle">
                                         {widget.title}
                                    </IonCardTitle>
-                                   <IonCardSubtitle>{widget.type}</IonCardSubtitle>
+                                   <IonCardSubtitle>{widget.type} - {widget._id}</IonCardSubtitle>
                                    <IonCardContent >
                                         <IonText>{widget.command}</IonText>
-
                                         <IonButton className="CardButtons" color="danger" slot="end" onClick={()=>deleteWidget(widget._id)}>
                                              <IonIcon icon={trashBin}/>
                                         </IonButton>
@@ -115,17 +125,20 @@ export default function Launcher(){
                                              <IonIcon icon={pencil}/>
                                         </IonButton>
                                        
+
                                    </IonCardContent>
                               </IonCard>
                          </IonCol>
                     ))}
+                    {
+                         //IMMEDIATE CMD WIDGET
+                    }
                     <ImmediateShell execShell={(cmd)=>execShell(cmd)}/>
                     </IonRow>
                </IonGrid>
+
                <AddWidget reloadList={() => getWidgets()} />
 
           </IonContent>
      )
 }
-
-/* <IonCardSubtitle>{widget._id}</IonCardSubtitle> */

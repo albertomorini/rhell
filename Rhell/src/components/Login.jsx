@@ -37,7 +37,7 @@ export default function Login(){
      }
 
      return(
-          <IonContent className="ion-padding" style={{width:"50%", margin:"0"}}>
+          <IonContent className="ion-padding" >
                <IonLabel>Username</IonLabel>
                <IonInput mode="md" fill="outline" type="text" onIonChange={(ev) => setUsername(ev.target.value)} placeholder="your username.." onKeyDown={(ev) => enterPressed(ev)} />
                <IonLabel>Password</IonLabel>

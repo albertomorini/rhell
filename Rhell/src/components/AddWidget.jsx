@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCardContent, IonCardSubtitle, IonCardTitle, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonLabel, IonModal, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonLabel, IonModal, IonSegment, IonSegmentButton, IonText, IonTitle, IonToolbar } from "@ionic/react";
 import React, { useContext, useRef, useState } from "react";
 import { add, closeCircle } from 'ionicons/icons';
 import { doRequest } from "../HttpRequester";
@@ -19,10 +19,10 @@ export default function AddWidget(props){
           setCommand(null);
      }
 
-     function saveNewWidget(){
+     function saveNewWidget(){ 
           if(WidgetType!="" && Title!="" && Command!=""){
                doRequest("mngWidget",{
-                    "action":"I",
+                    "action":"I", //input mode
                     "username": ctx.User.User.Username,
                     "password":ctx.User.User.Password,
                     "title": Title,
@@ -50,7 +50,9 @@ export default function AddWidget(props){
                          <IonIcon mode="ios" icon={add}/>
                </IonFabButton>
           </IonFab>
-          
+          {
+               //modal with form for new widget
+          }
           <IonModal ref={refAddWidget} mode="ios">
                <IonHeader>
                     <IonToolbar>

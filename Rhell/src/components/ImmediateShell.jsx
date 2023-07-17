@@ -10,12 +10,15 @@ export default function ImmediateShell(props){
 
      return(
           <>
-               <IonCol size="3">
+               <IonCol size="4">
                     <IonCard className="CardWidget" button="true" onClick={() => refImmShell?.current?.present()} color="dark" mode="ios">
                          <IonCardTitle color="danger">Immediate shell</IonCardTitle>
                          <IonCardSubtitle>SHELL</IonCardSubtitle>
                     </IonCard>
                </IonCol>
+               {
+                    //modal with input box for immediate CMD
+               }
                <IonModal ref={refImmShell}>
                     <IonHeader>
                          <IonToolbar>

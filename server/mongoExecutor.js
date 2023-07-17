@@ -20,12 +20,8 @@ async function authenticate(username,password){
     })
 }
 
-
 async function mngWidget(action, username, title=null, command=null, type=null, IDWidget=null){
     if(action=="R"){
-        database.collection(COLLECTION_WIDGETS).find({}).toArray().then(res=>{
-            console.log(res)
-        })
         return database.collection(COLLECTION_WIDGETS).find({"username":username}).toArray();
     }else if(action=="I"){
         return database.collection(COLLECTION_WIDGETS).insertOne({
@@ -37,36 +33,32 @@ async function mngWidget(action, username, title=null, command=null, type=null, 
     }else if(action=="D"){
         return database.collection(COLLECTION_WIDGETS).deleteOne({ _id: new ObjectId(IDWidget)})
     }else if (action=="U"){
-        //TODO: 
+        //TODO: implement
     }
-}
-
-//////////
-async function createDatabase(){
-    database.createCollection(COLLECTION_USERS)
-}
-async function dropCollection(){
-    database.dropCollection(COLLECTION_USERS)
-    
 }
 
 
 async function insertUser(username,password){
-    return database.collection(COLLECTION_USERS).insertOne({"username":username,"psw":password}).then(resInsert=>{
-
-    })
+    return database.collection(COLLECTION_USERS).insertOne({"username":username,"psw":password})
 }
 
-async function deleteUsers(){
-    return database.collection(COLLECTION_USERS).deleteMany({}).then(resDelete=>{
-        console.log(resDelete)
-    })
+async function deleteUser(username){
+    database.collection(COLLECTION_WIDGETS).deleteMany({"username":username}); //REMOVE ALSO THE WIDGETS
+    return database.collection(COLLECTION_USERS).deleteMany({"username":username});
+}
+
+/**
+ * @returns get all users
+ */
+async function getUsers(){
+    return database.collection(COLLECTION_USERS).find({}).toArray();
 }
 
 module.exports={
     authenticate: authenticate,
     insertUser: insertUser,
-    deleteUsers: deleteUsers,
-    mngWidget: mngWidget
+    deleteUser: deleteUser,
+    mngWidget: mngWidget,
+    getUsers: getUsers
 }
 

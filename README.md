@@ -12,6 +12,13 @@ All of this, from my iPad or my phone.
 
 And also, want to execute some immediate shell command like `cd Downloads; ls`.
 
+![launcher](./img/launcher.png)
+
+### Immediate command
+
+![immediate](./img/immediate.png)
+![outImm](./img/outputImmediate.png)
+
 ## Architecture
 
 Three tier 
@@ -23,9 +30,16 @@ Three tier
      - To store user and relative widgets
 
 
-## TODO
+## USAGE
 
-- IDEA: for web widgets => retrieve the favicon and/or title of the webpage
-- auth
-- UI
-     - fix delete button also play
+- nodejs 
+     w/ some libraries
+- react (react-scripts) or ionic framework
+- mongoDB
+
+**NB**: The user will be created on server side for security concern.
+> Users can execute shell script like `rm -rf importantFiles/*` so I thought it will be better to create on the server side and avoid a sign up page on client
+
+## *Draft*
+
+![draft](./img/NEWPLAN.png)

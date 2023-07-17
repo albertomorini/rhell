@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonTitle, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
 import { Storage } from '@ionic/storage';
 
@@ -9,17 +9,18 @@ const Tab2: React.FC = () => {
 
   function saveServerConfig(){
     store.create();
-    store.set("serverName",ServerName);
+    store.set("serverName",ServerName); //save the server name into the cache
   }
+
   function enterPressed(ev : any){
     if (ev.key == "Enter") { //if pressend enter, process credentials
       saveServerConfig()
     } 
   }
 
-  function changeFontSize(value) {
-    console.log(10 + (2 * value)); //12,14,16,18,20
-  }
+  // function changeFontSize(value) {
+  //   console.log(10 + (2 * value)); //12,14,16,18,20
+  // }
 
   return (
 
@@ -34,8 +35,6 @@ const Tab2: React.FC = () => {
         <IonInput type="text" fill="outline" mode="md" placeholder='albys-mac.local'  onIonChange={(ev)=>setServerName(ev.target.value)} onKeyDown = {(ev) => enterPressed(ev)}/>
         <IonButton onClick={()=>saveServerConfig()} expand="block" color="success" mode="ios">Save</IonButton>
         
-        <IonLabel style={{ fontSize: 23 }} position="stacked">Font size</IonLabel>
-        <IonInput mode='ios' type='range' min={1} max={5} onIonChange={(ev) => changeFontSize(ev.target.value)}></IonInput>
       </div>
 
     </IonContent>
@@ -43,3 +42,6 @@ const Tab2: React.FC = () => {
 };
 
 export default Tab2;
+
+{/* <IonLabel style={{ fontSize: 23 }} position="stacked">Font size</IonLabel> */}
+{/* <IonInput mode='ios' type='range' min={1} max={5} onIonChange={(ev) => changeFontSize(ev.target.value)}></IonInput> */}
