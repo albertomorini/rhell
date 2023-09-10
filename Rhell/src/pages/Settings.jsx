@@ -2,7 +2,7 @@ import { IonButton, IonContent, IonHeader, IonInput, IonLabel, IonTitle, IonTool
 import { useState } from 'react';
 import { Storage } from '@ionic/storage';
 
-const Tab2: React.FC = () => {
+const Tab2 = () => {
 
   const [ServerName, setServerName] = useState();
   const store = new Storage();
@@ -12,7 +12,7 @@ const Tab2: React.FC = () => {
     store.set("serverName",ServerName); //save the server name into the cache
   }
 
-  function enterPressed(ev : any){
+  function enterPressed(ev ){
     if (ev.key == "Enter") { //if pressend enter, process credentials
       saveServerConfig()
     } 
